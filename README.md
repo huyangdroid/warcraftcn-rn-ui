@@ -1,56 +1,202 @@
-# Welcome to your Expo app 👋
+# WarcraftCN React Native UI
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native/Expo implementation of the [WarcraftCN UI](https://github.com/TheOrcDev/warcraftcn-ui) component library.
 
-## Get started
+This package aims to mirror the core component APIs and retro Warcraft III–inspired aesthetics of the original web library, using:
 
-1. Install dependencies
+- **Expo SDK 55** (React Native 0.83)
+- **uniwind** for Tailwind-style styling
+- **rn-primitives** for basic building blocks (Pressable, Text, View, etc.)
 
-   ```bash
-   npm install
-   ```
+The goal is: drop-in, mobile‑first Warcraft UI primitives you can use in any Expo app.
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## Status
 
-In the output, you'll find options to open the app in a
+This is an early port, but most of the core primitives from `components/ui` and the Warcraft‑specific set are implemented.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Implemented components
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Under `src/components/warcraft`:
 
-## Get a fresh project
+- **Layout & chrome**
+  - `WarcraftFrame`
+  - `WarcraftPanel`
+  - `WarcraftCard`, `WarcraftCardHeader`, `WarcraftCardTitle`, `WarcraftCardDescription`, `WarcraftCardAction`, `WarcraftCardContent`, `WarcraftCardFooter`
+  - `WarcraftSeparator`
+  - `WarcraftSidebar`, `WarcraftSidebarHeader`, `WarcraftSidebarFooter`, `WarcraftSidebarToggle`, `SidebarProvider`
 
-When you're ready, run:
+- **Inputs & toggles**
+  - `WarcraftButton`
+  - `WarcraftInput`
+  - `WarcraftTextarea`
+  - `WarcraftCheckbox`
+  - `WarcraftToggle`
 
-```bash
-npm run reset-project
+- **Navigation & surfaces**
+  - `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`
+  - `WarcraftScrollArea`
+  - `Dialog`, `DialogTrigger`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose`
+  - `Drawer`, `DrawerTrigger`, `DrawerOverlay`, `DrawerContent`, `DrawerHeader`, `DrawerFooter`, `DrawerClose`
+  - `Sheet`, `SheetTrigger`, `SheetOverlay`, `SheetContent`, `SheetHeader`, `SheetFooter`, `SheetClose`
+
+- **Feedback & display**
+  - `WarcraftBadge`
+  - `WarcraftTag`
+  - `WarcraftKbd`, `WarcraftKbdGroup`
+  - `WarcraftSkeleton`
+  - `Tooltip`, `TooltipTrigger`, `TooltipContent`
+
+- **Menus**
+  - `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator`
+
+The APIs are intentionally **close to the web library** where it makes sense, but adapted for React Native (no DOM, hover, or Radix under the hood).
+
+---
+
+## Project structure
+
+```text
+warcraftcn-rn-ui/
+├── app/                     # expo-router entry + example screens
+├── src/
+│   ├── components/
+│   │   ├── ui/              # local RN UI utilities
+│   │   └── warcraft/        # WarcraftCN RN primitives (this library)
+│   ├── hooks/
+│   ├── constants/
+│   ├── uniwind/             # Uniwind provider wiring
+│   └── ...
+├── assets/
+├── uniwind.config.ts        # WarcraftCN theme tokens (colors, fonts)
+├── app.json
+├── package.json
+└── README.md
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+The theme (colors, typography) is defined in `uniwind.config.ts` and consumed via the Uniwind provider in `src/uniwind/UniwindProvider.tsx` and `app/_layout.tsx`.
 
-### Other setup steps
+---
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Getting started
 
-## Learn more
+Install dependencies and run the Expo dev server:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm install
+npm run start
+# or
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Then open the app in:
 
-## Join the community
+- iOS Simulator
+- Android Emulator
+- A physical device via Expo Go
 
-Join our community of developers creating universal apps.
+The main demo lives in `app/index.tsx` and showcases a small subset of the Warcraft components. You can add your own playground screens under `app/` to exercise more primitives.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## Usage
+
+All Warcraft components are exported from `src/components/warcraft`. In a typical Expo app, you would either:
+
+- Use them directly via relative imports, or
+- Re-export them from a local `ui` index.
+
+Example: button and dialog
+
+```tsx
+import React from "react";
+import { View } from "react-native";
+import {
+  WarcraftButton,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/warcraft"; // adjust path to your setup
+
+export function ExampleScreen() {
+  return (
+    <View style={{ flex: 1, padding: 16 }}>
+      <Dialog>
+        <DialogTrigger>
+          <WarcraftButton>Open dialog</WarcraftButton>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Warcraft dialog</DialogTitle>
+            <DialogDescription>
+              This dialog is implemented with React Native primitives and Uniwind classes.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose>
+              <WarcraftButton>Close</WarcraftButton>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </View>
+  );
+}
+```
+
+Example: sidebar layout
+
+```tsx
+import React from "react";
+import { View, Text } from "rn-primitives";
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarToggle,
+} from "@/components/warcraft";
+
+export function SidebarExample() {
+  return (
+    <SidebarProvider defaultState="expanded">
+      <View className="flex-row flex-1">
+        <Sidebar>
+          <SidebarHeader>
+            <Text className="text-wcAccent text-xs uppercase">Navigation</Text>
+          </SidebarHeader>
+          <SidebarFooter>
+            <SidebarToggle label="Toggle sidebar" />
+          </SidebarFooter>
+        </Sidebar>
+        <View className="flex-1 bg-wcBackground" />
+      </View>
+    </SidebarProvider>
+  );
+}
+```
+
+---
+
+## Design notes
+
+- **No Radix / web-only behavior** – components are built directly on top of React Native + rn-primitives. Where the web version uses hover/focus/ARIA attributes, the RN version uses touch‑friendly equivalents (e.g. `onPressIn`/`onPressOut` for tooltips).
+- **Close, not identical APIs** – names and composition patterns follow the web library where possible (e.g. `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogClose`), but some props and behaviors differ due to platform constraints.
+- **Theming via Uniwind** – all visual styling is done through Uniwind class names defined in `uniwind.config.ts`, matching the WarcraftCN palette (`wcBackground`, `wcPanel`, `wcBorder`, `wcAccent`, etc.).
+
+---
+
+## Roadmap
+
+- Polish component docs and examples inside the Expo app.
+- Add Storybook / component gallery for easier visual QA.
+- Iterate on accessibility patterns for mobile (focus management, screen reader labels, etc.).
+
+If you want to use this in production, read through the source of each component you rely on – the implementation is intentionally small and easy to customize.
