@@ -1,6 +1,10 @@
 import React from "react";
-import { View, Text, ImageBackground } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { WarcraftFrame } from "../src/components/warcraft/frame";
+import { WarcraftPanel } from "../src/components/warcraft/panel";
+import { WarcraftButton } from "../src/components/warcraft/button";
+import { Text } from "rn-primitives";
 
 export default function HomeScreen() {
   return (
@@ -11,7 +15,7 @@ export default function HomeScreen() {
         className="flex-1"
       >
         <View className="flex-1 px-4 py-6">
-          <View className="border-2 border-wcBorder bg-wcPanel/80 rounded-md shadow-lg">
+          <WarcraftFrame>
             <View className="flex-row items-center justify-between px-4 py-3 border-b border-wcBorderDark bg-black/40">
               <Text className="text-wcAccent font-wc text-lg tracking-wide">
                 WarcraftCN UI · React Native
@@ -26,25 +30,27 @@ export default function HomeScreen() {
               </Text>
 
               <View className="mt-2 flex-row gap-x-3">
-                <View className="flex-1 border border-wcBorderDark bg-black/30 px-3 py-2 rounded-sm">
-                  <Text className="text-wcAccent text-xs uppercase tracking-wide">
-                    Components
-                  </Text>
+                <WarcraftPanel title="Components" className="flex-1">
                   <Text className="text-wcText text-sm mt-1">
                     Buttons, frames, panels, tabs, overlays and more.
                   </Text>
-                </View>
-                <View className="flex-1 border border-wcBorderDark bg-black/30 px-3 py-2 rounded-sm">
-                  <Text className="text-wcAccent text-xs uppercase tracking-wide">
-                    Platforms
-                  </Text>
+                </WarcraftPanel>
+
+                <WarcraftPanel title="Platforms" className="flex-1">
                   <Text className="text-wcText text-sm mt-1">
                     iOS, Android, and web via React Native Web.
                   </Text>
-                </View>
+                </WarcraftPanel>
+              </View>
+
+              <View className="mt-4 flex-row gap-x-3">
+                <WarcraftButton>Open components</WarcraftButton>
+                <WarcraftButton className="bg-black/20 border-wcBorder">
+                  View on GitHub
+                </WarcraftButton>
               </View>
             </View>
-          </View>
+          </WarcraftFrame>
         </View>
       </ImageBackground>
     </SafeAreaView>
